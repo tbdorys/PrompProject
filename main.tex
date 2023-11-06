@@ -1,0 +1,161 @@
+\documentclass{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{color}
+
+% Tema de Beamer
+\usetheme{Madrid}
+\usecolortheme{seahorse}
+
+% Título
+\title{Aprendiendo Redes Neuronales con ChatGPT}
+%\subtitle{Explorando el perceptrón y más allá}
+\author{Dorys Trujillo Beltrán}
+\institute{Prompt Engineering}
+\date{10 de noviembre de 2023}
+
+% Configuración del pie de página
+%\setbeamertemplate{footline}{\author{} \institute{} \date{\insertdate}}
+
+%\setbeamertemplate{footline}{\author{}}
+\setbeamertemplate{footline}{%
+    \leavevmode%
+    \hbox{%
+        \begin{beamercolorbox}[wd=.33\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+            \usebeamerfont{author in head/foot}\insertauthor
+        \end{beamercolorbox}%
+        \begin{beamercolorbox}[wd=.33\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+            \usebeamerfont{title in head/foot}\insertinstitute
+        \end{beamercolorbox}%
+        \begin{beamercolorbox}[wd=.33\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+            \usebeamerfont{date in head/foot}\insertdate\hspace*{2ex}
+        \end{beamercolorbox}%
+    }%
+    \vskip0pt%
+}
+
+
+\begin{document}
+
+% Título de la diapositiva de título
+\begin{frame}
+\titlepage
+\end{frame}
+
+% Diapositiva de Contenido
+\begin{frame}
+\frametitle{Contenido}
+\tableofcontents
+\end{frame}
+
+% Sección 1: Introducción
+\section{Introducción}
+
+% Diapositiva 1
+\begin{frame}
+\frametitle{Introducción}
+\begin{itemize}
+\item Las redes neuronales son una parte fundamental del aprendizaje profundo.
+\item ChatGPT es una poderosa herramienta para comprender conceptos de redes neuronales.
+\item En esta presentación, exploraremos el concepto de perceptrón y su implementación.
+\end{itemize}
+\end{frame}
+
+% Sección 2: Perceptrón
+\section{Perceptrón}
+
+% Diapositiva 2
+\begin{frame}
+\frametitle{El Perceptrón}
+\begin{itemize}
+\item El perceptrón es una unidad básica en una red neuronal.
+\item Funciona como un clasificador binario.
+\item Echemos un vistazo a su código y cómo funciona.
+\end{itemize}
+\end{frame}
+
+% Código del Perceptrón
+\begin{frame}[fragile]
+\frametitle{Código del Perceptrón}
+\begin{lstlisting}[language=Python]
+def perceptron(x1,x2):
+    v = x1 + x2 - 1.2
+    if v < 0:
+        return 0
+    else:
+        return 1
+
+X = [[0, 0],
+    [0, 1],
+    [1, 0],
+    [1, 1]]
+
+for n in range(4):
+    y = perceptron(X[n][0],X[n][1])
+    print('Input :', X[n], 'Output :', y)
+\end{lstlisting}
+\end{frame}
+
+% Diapositiva 3
+\begin{frame}
+\frametitle{Explicación de ChatGPT}
+\begin{itemize}
+\item \textbf{def perceptron(x1, x2):} Esto define una función llamada perceptron que toma dos argumentos, x1 y x2.
+
+\item \textbf{v = x1 + x2 - 1.2:}: En esta línea, se calcula un valor v sumando x1 y x2 y luego restando 1.2 a esa suma. Este valor v se usa en la siguiente línea para tomar una decisión.
+
+\item \textbf{if v < 0:} Aquí se inicia una estructura condicional. Si el valor v es menor que 0, se ejecutará el bloque de código dentro de esta condición.
+
+\item \textbf{return 0:} En caso de que v sea menor que 0, la función perceptron devuelve 0. Esto significa que si la suma de x1 y x2 menos 1.2 es menor que 0, la función retornará 0.
+
+\item \textbf{else:}: Si v no es menor que 0, se ejecutará el bloque de código dentro de este bloque else.
+
+\item \textbf{return 1:} En este caso, la función perceptron devuelve 1. Esto significa que si la suma de x1 y x2 menos 1.2 no es menor que 0, la función retornará 1.
+
+\end{itemize}
+\end{frame}
+
+
+% Resultados del Perceptrón
+\begin{frame}
+\frametitle{Explicación de ChatGPT}
+\begin{itemize}
+
+\item \textbf{X = [[0, 0], [0, 1], [1, 0], [1, 1]]:} Esto crea una lista X que contiene cuatro sub-listas, cada una de las cuales tiene dos valores. Estas sub-listas representan las entradas del perceptrón.
+
+\item \textbf{for n in range(4):}: Se inicia un bucle for que recorre los valores de n desde 0 hasta 3. Esto se hace para evaluar el perceptrón en cada una de las cuatro combinaciones de entrada.
+
+\item \textbf{y = perceptron(X[n][0], X[n][1]):} En cada iteración del bucle, se llama a la función perceptron con los valores de X[n][0] y X[n][1] como argumentos. Esto calcula la salida del perceptrón para la entrada actual y la almacena en la variable y.
+
+\item \textbf{print('Input :', X[n], 'Output :', y):} Se imprime en la consola un mensaje que muestra la entrada actual y la salida del perceptrón. Por ejemplo, para la primera entrada [0, 0], mostrará "Input: [0, 0] Output: 0" si la salida es 0 según la función perceptron. El proceso se repite para todas las combinaciones de entrada en la lista X.
+
+\end{itemize}
+\end{frame}
+
+% Sección 3: Aprendizaje Profundo
+%\section{Aprendizaje Profundo}
+
+% Diapositiva 4
+%\begin{frame}
+%\frametitle{Aprendizaje Profundo}
+%\begin{itemize}
+%\item El perceptrón es solo el comienzo.
+%\item Explora conceptos más avanzados de redes neuronales.
+%\item ChatGPT es una herramienta valiosa para aprender y experimentar.
+%\end{itemize}
+%\end{frame}
+
+% Diapositiva de Cierre
+\begin{frame}
+\frametitle{Gracias}
+\begin{center}
+\Huge ¡Gracias por su atención!
+\end{center}
+\end{frame}
+
+\end{document}
+
