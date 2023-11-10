@@ -1,0 +1,200 @@
+---
+title: "<span style='color:blue'> Informe mensual de la venta de vehículos nuevos</span>"
+author: "Alianza Pepito-Perez"
+date: "2023-11-06"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo=FALSE}
+#Llamado a las librerias necesarias para correr el código
+
+# Cargar la biblioteca ggplot2
+#library(ggplot)
+library(ggplot2)  #libreria para graficar
+library(forcats)  
+library(plotrix)  #Libreria para hacer graficas en 3D
+```
+
+## <span style='color:blue'> Venta de vehículos en el mes de diciembre 2022</span>
+
+
+La alianza Pepito - Pérez, representantes del sector automotor en Colombia presenta el informe estádístico de venta de vehículos nuevos a cierre de diciembre 2022.
+
+
+```{r, echo=FALSE}
+# Especifica la ruta del archivo
+ruta_archivo <- "C:/Users/User/Desktop/R_Informe vehículos/Datos/Dic2022.txt"
+
+# Carga el archivo en un data frame
+df <- read.table(file = ruta_archivo, header = TRUE, sep = "|", stringsAsFactors = FALSE)
+
+```
+
+### <span style='color:blue'> 1. Ventas por segmentos </span>
+
+La venta de vehículos en diciembre se distribuyó en los siguientes segmentos:
+
+1. Vehículos utilitarios con 9.171 unidades vendidas
+2. Automóviles con 7.204 unidades vendidas
+3. Comerciales de carga con 2.061 unidades vendidas
+
+Para mayor detalle ver Tabla 1 en el anexo
+
+```{r, echo=FALSE}
+
+# Ajustar el tamaño de la ventana gráfica
+par(mar = c(5, 5, 4, 2) + 0.1)  # Ajustar los márgenes
+
+# Asegúrate de que la variable 'SEGMENTO' sea de tipo factor
+df$SEGMENTO <- as.factor(df$SEGMENTO)
+
+# Calcular las frecuencias y ordenar de mayor a menor
+frecuencias <- table(df$SEGMENTO)
+frecuencias_ordenadas <- frecuencias[order(-frecuencias)]
+
+# Crear el histograma de frecuencias con tamaño ajustado
+barplot(frecuencias_ordenadas, 
+        main = "Venta de vehículos nuevos por segmento",
+        #xlab = "Segmento", 
+        ylab = "Unidades registradas", 
+        col = "lightgreen", 
+        border = "lightgreen",
+        ylim = c(0, max(frecuencias_ordenadas) + 1000),  # Ajustar el límite superior del eje Y
+        width = 0.7)  # Ajustar el ancho de las barras según sea necesario
+
+
+# Agregar etiquetas a las barras
+#text(seq_along(frecuencias_ordenadas), frecuencias_ordenadas, labels = frecuencias_ordenadas, pos = 3, col = "black", cex = 0.9)
+
+# Agregar etiquetas centradas en las barras
+text(seq_along(frecuencias_ordenadas), 
+     frecuencias_ordenadas / 2.5,  # Centrar en la mitad de cada barra
+     labels = frecuencias_ordenadas, 
+     pos = 3, 
+     col = "black", 
+     cex = 0.9)
+```
+
+### <span style='color:blue'> 2. Ventas por departamento</span>
+
+
+```{r, echo=FALSE}
+# Ajustar el tamaño de la ventana gráfica
+par(mar = c(5, 5, 4, 2) + 0.1)  # Ajustar los márgenes
+
+# Asegúrate de que la variable 'DEPARTAMENTO' sea de tipo factor
+df$DEPARTAMENTO <- as.factor(df$DEPARTAMENTO)
+
+# Calcular las frecuencias de los departamentos
+frecuencias_departamento <- table(df$DEPARTAMENTO)
+
+# Seleccionar los 5 primeros departamentos con mayores ventas
+top_departamentos <- head(sort(frecuencias_departamento, decreasing = TRUE), 5)
+
+# Crear el gráfico de barras para los 5 primeros departamentos
+barplot(top_departamentos, 
+        main = "Top 5 departamentos con mayores ventas", 
+        # xlab = "Departamento", 
+        ylab = "Unidades registradas",
+        col = "lightblue", 
+        border = "lightblue",
+        ylim = c(0, max(top_departamentos) + 1000))  # Ajustar el límite superior del eje Y
+
+# Agregar etiquetas a las barras
+text(seq_along(top_departamentos), top_departamentos, labels = top_departamentos, pos = 2, col = "black", cex = 0.8)
+
+# Modificar etiquetas del eje x para mostrar los nombres de los departamentos
+axis(1, at = seq_along(top_departamentos), labels = names(top_departamentos),  las = 2, cex.axis = 0.6)
+
+
+# Rotar las etiquetas del eje x para evitar superposiciones
+par(las = 2)
+```
+
+
+
+
+### <span style='color:blue'> 3. Ventas por tipo de combustible</span>
+
+De los vehículos nuevos que se vendieron en diciembre del 2022 el 67,5% son vehículos a gasolina, el 22,1% son vehículos a diésel y el 8,5% son vehículos hibridos.
+
+```{r, echo=FALSE}
+# Asegurarse de que la variable 'COMBUSTIBLE' sea de tipo factor
+df$COMBUSTIBLE <- as.factor(df$COMBUSTIBLE)
+
+# Calcular la tabla de frecuencias de 'COMBUSTIBLE'
+frecuencias_combustible <- table(df$COMBUSTIBLE)
+
+# Calcular los porcentajes
+porcentajes_combustible <- prop.table(frecuencias_combustible) * 100
+
+# Crear un dataframe con los resultados
+resultados_combustible <- data.frame(Combustible = names(frecuencias_combustible), Frecuencia = as.numeric(frecuencias_combustible), Porcentaje = round(porcentajes_combustible, 1))
+
+# Ordenar los datos de menor a mayor
+orden <- order(frecuencias_combustible)
+frecuencias_combustible <- frecuencias_combustible[orden]
+porcentajes_combustible <- porcentajes_combustible[orden]
+
+
+# Crear el gráfico de pastel
+
+par(pin = c(4, 4))  # Puedes ajustar los valores (ancho, alto) según tus preferencias
+
+# Crear el gráfico de pastel con leyenda y solo porcentajes sobre el gráfico
+pie(frecuencias_combustible,
+    labels = paste(names(frecuencias_combustible), "\n", round(porcentajes_combustible, 1), "%"),  # Desactivar las etiquetas por defecto
+    main = "Ventas de vehículos en diciembre por tipo de combustible",
+    col = rainbow(length(frecuencias_combustible)),
+    cex = 0.4,  # Ajustar el tamaño de las etiquetas
+    clockwise = TRUE)  # Sentido de las manecillas del reloj
+    
+```
+
+
+
+
+
+
+#### <span style='color:blue'> 4. Anexos</span>
+```{r, echo=FALSE}
+# Calcular la tabla de frecuencias y ordenar de mayor a menor
+frecuencias <- sort(table(df$SEGMENTO), decreasing = TRUE)
+
+# Calcular los porcentajes
+porcentajes <- prop.table(frecuencias) * 100
+
+# Crear un dataframe con los resultados
+#resultados <- data.frame(Segmento = names(frecuencias), Frecuencia = as.numeric(frecuencias), Porcentaje = round(porcentajes, 1))
+# Crear un dataframe con los resultados excluyendo la tercera columna y modificando los títulos
+resultados <- data.frame(Segmento = names(frecuencias), Unidades_vendidas = as.numeric(frecuencias), Participación = round(porcentajes, 1))
+
+# Mostrar el dataframe de resultados
+#print(resultados)
+
+# Mensaje para resaltar y nombrar la tabla de frecuencias
+cat("Tabla 1: Frecuencias por segmento\n")
+print(resultados)
+
+```
+
+
+```{r, echo=FALSE}
+# Imprimir el dataframe de resultados
+# Mensaje para resaltar y nombrar la tabla de frecuencias
+cat("Tabla 2: Frecuencias por tipo de combustible\n")
+
+print(resultados_combustible)
+```
+
+
+
+```{r, echo=FALSE}
+# verificar nombres de columnas
+#colnames(df)
+```
+
